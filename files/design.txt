@@ -1,0 +1,15 @@
+Title: Housemates Rent Calculator
+Description: This is an app that takes as input the cost of rent for a particular period,
+as well as the square-footage of each housemate's room or living quarters. It also generates
+a PDF report stating the names of the housemates, the period, and how much each of them had to pay.
+
+Objects: Rent:
+            amount
+            period
+         Housemate:
+            name
+            room-size
+            pays(bill)
+         PdfReport:
+            filename
+            generate(housemate1, housemate2, rent)
