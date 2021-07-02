@@ -1,97 +1,34 @@
-from fpdf import FPDF
+from house import Rent, Housemate
+from reports import PdfReport, FileSharer
 
-class Rent:
-    """
-    Object which contains data about a particular bill, including
-    the amount and period of the bill.
-    """
+# Asking for information regarding the rent and period
+amount = float(input("Hello! Please enter the total rent amount: "))
+period = input("What is the period? (ex: January 2020): ")
+total_people = int(input("How many total people (up to 5) share the rent? "))
 
-    def __init__(self, amount, period):
-        self.amount = amount
-        self.period = period
+# Asking for the user's name and information
+name = input("What is your name? ")
+room_size = float(input(f"What is the room size of {name} in square feet? "))
 
+# Generate a list to append all housemates, including the user
+housemates = []
+housemates.append(Housemate(name, room_size))
 
-class Housemate:
-    """
-    Person who lives in the home and pays a share of the rent
-    based on the size of their room or living quarters (in sq-ft).
-    """
+# Ask for each subsequent housemate, and add that housemate to our list
+for i in range(total_people-1):
+    housemate_name = input("Enter the name of a housemate: ")
+    housemate_room_size = float(input(f"What is the room size of {housemate_name} in square feet? "))
+    housemates.append(Housemate(housemate_name, housemate_room_size))
 
-    def __init__(self, name, room_size):
-        self.name = name
-        self.room_size = room_size
+# Closing message
+print("Please check the generated report for your calculated rent amounts. Thank you!")
 
-    def pays(self, rent, housemates: []):
-        total_size = self.room_size
-        for housemate in housemates:
-            total_size += housemate.room_size
-        return round(rent.amount * (self.room_size / total_size), 2)
+# Generate the report
+the_rent = Rent(amount, period)
+pdf_report = PdfReport(filename=f"{the_rent.period}.pdf")
+pdf_report.generate(the_rent, housemates)
 
-class PdfReport:
-    """
-    Creates a PDF file which contains data relating to the  housemates,
-    including their names and their portion of rent due for a particular
-    period.
-    """
-
-    def __init__(self, filename):
-        self.filename = filename
-
-    def generate(self, rent, **housemates):
-
-        pdf = FPDF(orientation='P', unit='pt', format='A4')
-        pdf.add_page()
-
-        # Insert title
-        #   Set font, B for bold
-        pdf.set_font(family='Arial', size=20, style='B')
-        #   Cell is the rectangle we're going to draw on the PDF
-        #   0 means take whole row length and 80 will be in pt units defined in FPDF
-        pdf.cell(w=0, h=80, txt="Housemates Bill", border=1, align="C", ln=1)  # Align Center
-
-        # Insert Period label and value
-        pdf.cell(w=125, h=40, txt="Period", border=1)  # Align Left (can exclude, as it's L by default)
-        pdf.cell(w=150, h=40, txt=rent.period, border=1, ln=1)  # Align Left (can exclude, as it's L by default)
-
-        # Taking all housemates from our argument and adding them to a list so we can use that list
-        #   when printing the names and amounts due
-        housemates_list = []
-        for housemate in housemates.values():
-            housemates_list.append(housemate)
-        # Since our max will be 5 housemates, add empty housemates until we reach 5, if needed
-        while len(housemates_list)<5:
-            housemates_list.append(Housemate(name="None", room_size=0))
-
-        # Housemate 1
-        pdf.cell(w=125, h=40, txt=housemates_list[0].name, border=1)
-        pdf.cell(w=150, h=40, txt="$" + str(housemates_list[0].pays(rent,
-                 [x for x in housemates_list if x != housemates_list[0]])), border=1, ln=1)
-        # Housemate 2
-        pdf.cell(w=125, h=40, txt=housemates_list[1].name, border=1)
-        pdf.cell(w=150, h=40, txt="$" + str(housemates_list[1].pays(rent,
-                 [x for x in housemates_list if x != housemates_list[1]])), border=1, ln=1)
-        # Housemate 3
-        pdf.cell(w=125, h=40, txt=housemates_list[2].name, border=1)
-        pdf.cell(w=150, h=40, txt="$" + str(housemates_list[2].pays(rent,
-                 [x for x in housemates_list if x != housemates_list[2]])), border=1, ln=1)
-        # Housemate 4
-        pdf.cell(w=125, h=40, txt=housemates_list[3].name, border=1)
-        pdf.cell(w=150, h=40, txt="$" + str(housemates_list[3].pays(rent,
-                 [x for x in housemates_list if x != housemates_list[3]])), border=1, ln=1)
-        # Housemate 5
-        pdf.cell(w=125, h=40, txt=housemates_list[4].name, border=1)
-        pdf.cell(w=150, h=40, txt="$" + str(housemates_list[4].pays(rent,
-                 [x for x in housemates_list if x != housemates_list[4]])), border=1, ln=1)
-
-
-        pdf.output(self.filename)
-
-rent1 = Rent(amount=2400, period="July 2021")
-john = Housemate(name="John", room_size=120)
-jacob = Housemate(name="Jacob", room_size=150)
-josephine = Housemate(name="Josephine", room_size=140)
-
-print(john.pays(rent1, [jacob, josephine]))
-
-pdf_report = PdfReport(filename="Report1.pdf")
-pdf_report.generate(rent=rent1, housemate1=john, housemate2=jacob, housemate3=josephine)
+# Share the report
+# Only used for Repl.it; Uncomment below 2 lines if applicable):
+# file_sharer = FileSharer(filepath=pdf_report.filename)
+# print(file_sharer.share())
