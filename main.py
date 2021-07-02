@@ -29,6 +29,6 @@ pdf_report = PdfReport(filename=f"{the_rent.period}.pdf")
 pdf_report.generate(the_rent, housemates)
 
 # Share the report
-# Only used for Repl.it; Uncomment below 2 lines if applicable):
+# Only used for Repl.it; Uncomment below 2 lines if applicable:
 # file_sharer = FileSharer(filepath=pdf_report.filename)
 # print(file_sharer.share())

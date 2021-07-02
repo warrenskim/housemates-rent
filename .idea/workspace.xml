@@ -2,11 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7b6b7933-9d76-4d38-b4a9-d5bc61f80909" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/house.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reports.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Report1.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/house.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
